@@ -1,12 +1,9 @@
-const path = require('path');
-
 const config = {
   entry: [
     './index.js',
   ],
   output: {
-    filename: 'bundle.js',
-    path: __dirname
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -19,6 +16,9 @@ const config = {
       },
     ],
   },
+  node: {
+    fs: 'empty'
+  }
 };
 
 module.exports = config;
