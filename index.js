@@ -15,16 +15,22 @@ class CanvasComponent extends React.Component {
 			#fontSize: 10
 			#lineWidth: 2
 			#padding: 10
-			#.activestate: fill=#ADFF2F visual=roundrect
+			#.activestategood: fill=#ADFF2F visual=roundrect
+			#.activestatebad: fill=#FF0000 visual=roundrect
 			#.inactivestate: fill=#CCC visual=roundrect
 			#.decision: fill=#CCC visual=rhomb
-			[<start>st] -> [<${(this.props.status==0)?'activestate':'inactivestate'}>saved]
-			[saved] -> [<${(this.props.status==1)?'activestate':'inactivestate'}>deposit]
-			[deposit] -> [<${(this.props.status==2)?'activestate':'inactivestate'}>email]
-			[email] - [<decision>dispatched?]
-			[dispatched?] y -> [<end>e]
-			[dispatched?] -> n [<${(this.props.status==3)?'activestate':'inactivestate'}>mail]
-			[mail] -> [<end>e]`;
+			[<start>st] -> [<${(this.props.status==0)?'activestategood':'inactivestate'}>Origination Request Received]
+			[Origination Request Received] - [<decision>Approved?]
+			[Approved?] n -> [<${(this.props.status==1)?'activestatebad':'inactivestate'}>Risk Declined]
+			[Risk Declined] -> [<end>e1]
+			[Approved?] y -> [<${(this.props.status==2)?'activestategood':'inactivestate'}>Risk Approved]
+			[Risk Approved] -> [<${(this.props.status==3)?'activestategood':'inactivestate'}>Contract Drafted]
+			[Contract Drafted] - [<decision>Accepted?]
+			[Accepted?] n -> [<${(this.props.status==4)?'activestatebad':'inactivestate'}>Contract Declined]
+			[Contract Declined] -> [<end>e2]
+			[Accepted?] y -> [<${(this.props.status==5)?'activestategood':'inactivestate'}>Contract Accepted]
+			[Contract Accepted] -> [<${(this.props.status==6)?'activestategood':'inactivestate'}>Contract Activated]
+			[Contract Activated] -> [<end>e3]`;
 		Graph.draw(this.refs.canvas, source);
     }
     render() {
@@ -44,7 +50,7 @@ class TestComponent extends React.Component {
 	}
 	onClick(e) {
 		this.setState(state => ({
-			status: (state.status < 3 ? state.status+1 : 0)
+			status: (state.status < 6 ? state.status+1 : 0)
 		}));
 	}
     render() {
